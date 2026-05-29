@@ -1,19 +1,19 @@
-FROM node:20-alpine
+# Build stage
+FROM node:20 AS builder
 
-# Create app directory
 WORKDIR /app
 
-# Copy package files
 COPY package*.json ./
 
-# Install dependencies
 RUN npm install
 
-# Copy application code
 COPY . .
 
-# Expose application port
-EXPOSE 3000
+RUN npm run build
 
-# Start application
-CMD ["npm", "start"]
+# Runtime stage
+FROM nginx:alpine
+
+COPY --from=builder /app/build /usr/share/nginx/html
+
+EXPOSE 80
