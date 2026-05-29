@@ -10,7 +10,6 @@ RUN npm install
 COPY . .
 
 ENV CI=false
-ENV NODE_OPTIONS=--openssl-legacy-provider
 
 RUN npm run build
 
